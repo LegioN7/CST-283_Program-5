@@ -1,0 +1,40 @@
+------------------------------------------------
+WEATHER AND NATURAL DISASTER WARNING CODES
+_AF Ash Fall
+_FF Flash Flood
+_FG Dense Fog
+_FL Flood
+_FR Frost
+_HS Heavy Snow
+_HT Heat
+_IS Ice Storm
+_TO Tornado
+_TR Tropical Storm
+_TS Tsunami
+_TY Typhoon
+_WI Wind
+_HU Hurricane
+_SN Snow
+_WS Winter Storm 
+_WW Winter Weather 
+_ZR Freezing Rain
+_BS Blowing Snow 
+_BZ Blizzard
+_HW High Wind
+_SV Severe Thunderstorm
+_EH Excessive Heat
+
+where '_' will include one of the following:
+W Warning
+A Watch
+Y Advisory
+
+------------------------------------------------
+NATIONAL SECURITY WARNING LEVEL INDICATORS
+RED     Severe risk of terrorist attacks
+ORANGE  High risk of terrorist attacks
+YELLOW  Significant risk of terrorist attacks
+BLUE    General risk of terrorist attack
+GREEN   Low risk of terrorist attacks
+------------------------------------------------
+
