@@ -2,151 +2,118 @@
 
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This class is a driver class that performs high-level actions using an AlertList object.
+ * It includes properties for alert types and levels, and references to a CountyList, AlertList, and AlertCalendar.
+ * It provides functionality to get the alert type and level, and to format the alert information.
+ */
 public class AlertProcessor {
-    private final CountyList countyList;
-    private final AlertList alertList;
-    private final AlertCalendar alertCalendar;
 
-    public AlertProcessor(CountyList countyList, AlertList alertList, AlertCalendar alertCalendar) {
+    // TEMPORARY ALERT TYPE AND LEVEL DATA
+    private static final String[] ALERT_TYPES = {"AF", "FF", "FG", "FL", "FR", "HS", "HT", "IS", "TO", "TR", "TS", "TY", "WI", "HU", "SN", "WS", "WW", "ZR", "BS", "BZ", "HW", "SV", "EH"};
+    private static final String[] ALERT_TYPE_NAMES = {"Ash Fall", "Flash Flood", "Dense Fog", "Flood", "Frost", "Heavy Snow", "Heat", "Ice Storm", "Tornado", "Tropical Storm", "Tsunami", "Typhoon", "Wind", "Hurricane", "Snow", "Winter Storm", "Winter Weather", "Freezing Rain", "Blowing Snow", "Blizzard", "High Wind", "Severe Thunderstorm", "Excessive Heat"};
+    private static final char[] ALERT_LEVELS = {'W', 'A', 'Y'};
+    private static final String[] ALERT_LEVEL_NAMES = {"Warning", "Watch", "Advisory"};
+
+
+    private final CountyList countyList;
+
+    /**
+     * Constructs a new AlertProcessor with the specified CountyList, AlertList, and AlertCalendar.
+     *
+     * @param countyList the CountyList to be used for county data referencing
+     */
+    public AlertProcessor(CountyList countyList) {
         this.countyList = countyList;
-        this.alertList = alertList;
-        this.alertCalendar = alertCalendar;
     }
 
+    /**
+     * Returns the alert type based on the provided code.
+     *
+     * @param code the alert code
+     * @return the alert type
+     */
     public String getAlertType(String code) {
         String alertTypeCode = code.toUpperCase();
-        if (alertTypeCode.length() > 2) {
-            alertTypeCode = alertTypeCode.substring(1);
-        }
 
         switch (alertTypeCode) {
-            // Weather Warning Level Indicators
-            case "AF" -> {
-                return "Ash Fall";
-            }
-            case "FF" -> {
-                return "Flash Flood";
-            }
-            case "FG" -> {
-                return "Dense Fog";
-            }
-            case "FL" -> {
-                return "Flood";
-            }
-            case "FR" -> {
-                return "Frost";
-            }
-            case "HS" -> {
-                return "Heavy Snow";
-            }
-            case "HT" -> {
-                return "Heat";
-            }
-            case "IS" -> {
-                return "Ice Storm";
-            }
-            case "TO" -> {
-                return "Tornado";
-            }
-            case "TR" -> {
-                return "Tropical Storm";
-            }
-            case "TS" -> {
-                return "Tsunami";
-            }
-            case "TY" -> {
-                return "Typhoon";
-            }
-            case "WI" -> {
-                return "Wind";
-            }
-            case "HU" -> {
-                return "Hurricane";
-            }
-            case "SN" -> {
-                return "Snow";
-            }
-            case "WS" -> {
-                return "Winter Storm";
-            }
-            case "WW" -> {
-                return "Winter Weather";
-            }
-            case "ZR" -> {
-                return "Freezing Rain";
-            }
-            case "BS" -> {
-                return "Blowing Snow";
-            }
-            case "BZ" -> {
-                return "Blizzard";
-            }
-            case "HW" -> {
-                return "High Wind";
-            }
-            case "SV" -> {
-                return "Severe Thunderstorm";
-            }
-            case "EH" -> {
-                return "Excessive Heat";
-            }
-            default -> {
+            case "RED":
+                return "Severe risk of terrorist attacks";
+            case "ORANGE":
+                return "High risk of terrorist attacks";
+            case "YELLOW":
+                return "Significant risk of terrorist attacks";
+            case "BLUE":
+                return "General risk of terrorist attack";
+            case "GREEN":
+                return "Low risk of terrorist attacks";
+            default:
+                if (alertTypeCode.length() > 2) {
+                    alertTypeCode = alertTypeCode.substring(1);
+                }
+                for (int i = 0; i < ALERT_TYPES.length; i++) {
+                    if (ALERT_TYPES[i].equals(alertTypeCode)) {
+                        return ALERT_TYPE_NAMES[i];
+                    }
+                }
+        }
 
-                // National Security Warning Level Indicators
-                switch (code.toUpperCase()) {
-                    case "RED" -> {
-                        return "Severe risk of terrorist attacks";
-                    }
-                    case "ORANGE" -> {
-                        return "High risk of terrorist attacks";
-                    }
-                    case "YELLOW" -> {
-                        return "Significant risk of terrorist attacks";
-                    }
-                    case "BLUE" -> {
-                        return "General risk of terrorist attack";
-                    }
-                    case "GREEN" -> {
-                        return "Low risk of terrorist attacks";
-                    }
-                    default -> {
-                        return "Unknown Alert";
-                    }
+        return "Unknown Alert";
+    }
+
+    /**
+     * Returns the alert level based on the provided code.
+     *
+     * @param code the alert code
+     * @return the alert level
+     */
+    public String getAlertLevel(String code) {
+        String alertTypeCode = code.toUpperCase();
+
+        if (alertTypeCode.equals("RED") || alertTypeCode.equals("ORANGE") || alertTypeCode.equals("YELLOW") || alertTypeCode.equals("BLUE") || alertTypeCode.equals("GREEN")) {
+            return "";
+        }
+
+        if (alertTypeCode.length() > 2) {
+            char alertLevelCode = code.charAt(0);
+
+            for (int i = 0; i < ALERT_LEVELS.length; i++) {
+                if (ALERT_LEVELS[i] == alertLevelCode) {
+                    return ALERT_LEVEL_NAMES[i];
                 }
             }
         }
+
+        return "Unknown Alert Level";
     }
 
-    public String getAlertLevel(String code) {
-        char alertLevelCode = code.charAt(0);
-        return switch (alertLevelCode) {
-            case 'W' -> "Warning";
-            case 'A' -> "Watch";
-            case 'Y' -> "Advisory";
-            default -> "Unknown Alert Level";
-        };
-    }
-
-
+    /**
+     * Formats the alert information into a string.
+     *
+     * @param alert the alert to format
+     * @return a string containing the formatted alert information
+     */
     public String formatAlertInfo(Alert alert) {
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy h:mm a");
-
         County county = countyList.getCountyByFipsCode(alert.getCountyFipsCode());
-        if (county == null) {
-            return "County not found for alert with code: " + alert.getCode();
-        }
 
+        // Format the alert information
+        String countyName = county.getName();
         String alertType = getAlertType(alert.getCode());
         String alertLevel = getAlertLevel(alert.getCode());
-        String countyName = county.getName();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy h:mm a");
+        String startDate = alert.getStartDate().format(formatter);
+        String endDate = alert.getEndDate().format(formatter);
         int population = county.getPopulation();
-        String startDate = alert.getStartDate().format(outputFormatter);
-        String endDate = alert.getEndDate().format(outputFormatter);
 
-        return alertType + " (" + alertLevel + ") for " + countyName + "\n" +
-                "From: " + startDate + "\n" +
-                "To: " + endDate + "\n" +
-                "Population Impact: " + population + "\n";
+        String alertInfo = alertType;
+        if (!alertLevel.isEmpty()) {
+            alertInfo += " " + alertLevel;
+        }
+
+        alertInfo += " for " + countyName + "\n" +
+                startDate + " - " + endDate + "\n" +
+                "Population Impact: " + String.format("%,d", population) + "\n";
+
+        return alertInfo;
     }
-
 }

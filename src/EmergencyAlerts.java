@@ -2,8 +2,6 @@
 // Aaron Pelto
 // Winter 202
 
-
-
 /*
     The Department of Homeland Security, the National Weather Service, and FEMA all require a program
     that will provide advisory information in the event of a weather or national security emergency.
@@ -62,74 +60,50 @@
         instead reorganize it for easier reading via file input).
  */
 
-    /*
-    Alerts that will be output
-    26111,201602121300,201602131200,WWS
-    11001,201607010000,201607112359,YELLOW
-    48073,201608031200,201608051800,YEH
-    12115,201609100000,201609120000,AHU
-    49035,201612240000,201612312359,GREEN
-    23001,201603170300,201603182200,YFG
-    30069,201602150700,201602170400,WBZ
-     */
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-
 public class EmergencyAlerts {
+
     private static Alert[] alerts;
-    private static AlertProcessor alertProcessor;
 
+    /**
+     * The main method reads the county and alert data, generates alerts based on this data,
+     * and then processes and prints these alerts.
+     *
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
-        CountyList countyList = new CountyList(3195);
-        AlertList alertList = new AlertList(100, countyList);
-        AlertCalendar alertCalendar = new AlertCalendar();
-        alertProcessor = new AlertProcessor(countyList, alertList, alertCalendar);
-        readData();
-        for (Alert alert : alerts) {
-            generateAlert(alert);
-        }
-    }
-
-    public static void readData() {
-        int lines = 0;
-        CountyList countyList = new CountyList(3195);
+        // Get the countyList
+        CountyList countyList = new CountyList(5000);
+        // Read the FIPS and population data
         countyList.readFipsCountyFile();
         countyList.readPopCountyFile();
 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("alerts.txt"));
-            while (reader.readLine() != null) lines++;
-            reader.close();
+        // Get the alertList
+        AlertList alertList = new AlertList(100, countyList);
+        // Read the alert data - alerts.txt file
+        alertList.readData();
 
-            alerts = new Alert[lines];
+        // Get the alerts
+        alerts = alertList.getAlerts();
 
-            reader = new BufferedReader(new FileReader("alerts.txt"));
-            for (int i = 0; i < lines; i++) {
-                String line = reader.readLine();
-                String[] fields = line.split(",");
-                if (fields.length != 4) {
-                    System.out.println("Skipping line " + (i+1) + " due to incorrect number of fields.");
-                    continue;
-                }
-                String countyFipsCode = fields[0];
-                String startDate = fields[1];
-                String endDate = fields[2];
-                String alertCode = fields[3];
-                try {
-                    alerts[i] = new Alert(countyFipsCode, startDate, endDate, alertCode, countyList);
-                } catch (Exception e) {
-                    System.out.println("Error creating Alert from line " + (i+1) + ": " + e.getMessage());
-                }
+        // Process and print the alerts
+        AlertProcessor alertProcessor = new AlertProcessor(countyList);
+        for (Alert alert : alerts) {
+            if (alert != null) {
+                generateAlert(alert, alertProcessor);
             }
-
-            reader.close();
-        } catch (Exception e) {
-            System.out.println("Error reading file");
         }
     }
 
-    public static void generateAlert(Alert alert) {
-            System.out.println(alertProcessor.formatAlertInfo(alert));
+
+    /**
+     * The generateAlert method processes and prints a single alert.
+     *
+     * @param alert          the alert to be processed
+     * @param alertProcessor the alert processor to process the alert
+     */
+    public static void generateAlert(Alert alert, AlertProcessor alertProcessor) {
+        // Generate the alert
+        // Print the alert
+        System.out.println(alertProcessor.formatAlertInfo(alert));
     }
 }

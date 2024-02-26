@@ -1,5 +1,3 @@
-------------------------------------------------
-WEATHER AND NATURAL DISASTER WARNING CODES
 _AF Ash Fall
 _FF Flash Flood
 _FG Dense Fog
@@ -31,10 +29,10 @@ Y Advisory
 
 ------------------------------------------------
 NATIONAL SECURITY WARNING LEVEL INDICATORS
-RED     Severe risk of terrorist attacks
-ORANGE  High risk of terrorist attacks
-YELLOW  Significant risk of terrorist attacks
-BLUE    General risk of terrorist attack
-GREEN   Low risk of terrorist attacks
+RED Severe risk of terrorist attacks
+ORANGE High risk of terrorist attacks
+YELLOW Significant risk of terrorist attacks
+BLUE General risk of terrorist attack
+GREEN Low risk of terrorist attacks
 ------------------------------------------------
 

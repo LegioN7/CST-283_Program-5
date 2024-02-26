@@ -2,38 +2,68 @@
 // Includes functionality necessary to write alert description.
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
+/**
+ * This class represents a single alert.
+ * It includes properties for the alert's code, start date, end date, and the county FIPS code.
+ * It provides functionality necessary to retrieve these properties.
+ */
 public class Alert {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
     private final String alertCode;
-    private final CountyList countyList;
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
-    private final String countyFipsCode;
+    private final int countyFipsCode;
 
-    public Alert(String countyFipsCode, String startDate, String endDate, String alertCode, CountyList countyList) {
+    /**
+     * Constructs a new Alert with the specified county FIPS code, start date, end date, and alert code.
+     *
+     * @param countyFipsCode the FIPS code of the county
+     * @param startDate the start date of the alert
+     * @param endDate the end date of the alert
+     * @param alertCode the code of the alert
+     */
+    public Alert(int countyFipsCode, LocalDateTime startDate, LocalDateTime endDate, String alertCode) {
         this.countyFipsCode = countyFipsCode;
-        this.countyList = countyList;
-        this.startDate = LocalDateTime.parse(startDate, DATE_TIME_FORMATTER);
-        this.endDate = LocalDateTime.parse(endDate, DATE_TIME_FORMATTER);
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.alertCode = alertCode;
     }
 
-    public String getCountyFipsCode() {
-        return this.countyFipsCode;
+    /**
+     * Returns the FIPS code of the county for this alert.
+     *
+     * @return the FIPS code of the county
+     */
+    public int getCountyFipsCode() {
+        return countyFipsCode;
     }
 
+    /**
+     * Returns the start date of this alert.
+     *
+     * @return the start date of this alert
+     */
     public LocalDateTime getStartDate() {
-        return this.startDate;
+        return LocalDateTime.from(this.startDate);
     }
 
+    /**
+     * Returns the end date of this alert.
+     *
+     * @return the end date of this alert
+     */
     public LocalDateTime getEndDate() {
-        return this.endDate;
+        return LocalDateTime.from(this.endDate);
     }
 
+    /**
+     * Returns the code of this alert.
+     *
+     * @return the code of this alert
+     */
     public String getCode() {
         return alertCode;
     }
+
 
 }
