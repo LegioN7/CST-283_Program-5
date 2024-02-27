@@ -62,8 +62,6 @@
 
 public class EmergencyAlerts {
 
-    private static Alert[] alerts;
-
     /**
      * The main method reads the county and alert data, generates alerts based on this data,
      * and then processes and prints these alerts.
@@ -83,7 +81,7 @@ public class EmergencyAlerts {
         alertList.readData();
 
         // Get the alerts
-        alerts = alertList.getAlerts();
+        Alert[] alerts = alertList.getAlerts();
 
         // Process and print the alerts
         AlertProcessor alertProcessor = new AlertProcessor(countyList);
